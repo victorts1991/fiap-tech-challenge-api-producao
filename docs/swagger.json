@@ -1,0 +1,702 @@
+{
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a documentation of all endpoints in the API.",
+        "title": "Tech Challenge API",
+        "contact": {},
+        "version": "3.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/cliente": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "cadastra um novo cliente",
+                "parameters": [
+                    {
+                        "description": "cria novo cliente",
+                        "name": "pedido",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.ClienteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Cliente"
+                        }
+                    }
+                }
+            }
+        },
+        "/clientes/{cpf}": {
+            "get": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "pega um cliente por cpf",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "cpf do cliente",
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Cliente"
+                        }
+                    }
+                }
+            }
+        },
+        "/liveness": {
+            "get": {
+                "description": "get the status of http.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Show the status of http.",
+                "responses": {
+                    "200": {
+                        "description": "token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/login/{cpf}": {
+            "get": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "pega um cliente por cpf",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "cpf do cliente",
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/pagamento/{pedido_id}": {
+            "get": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pagamento"
+                ],
+                "summary": "pega um pagamento por pedido id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id do pedido",
+                        "name": "pedido_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Pagamento"
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "cadastra um novo pedido",
+                "parameters": [
+                    {
+                        "description": "cria pedido",
+                        "name": "pedido",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.PedidoRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/pedido/checkout/{pedidoId}": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "checkout do pedido",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id do pedido a ser feito o checkout",
+                        "name": "pedidoId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "status permitido: aprovado | recusado",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.StatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/commons.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido/detail/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "lista detalhes do pedido",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id do pedido a ser lista",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Pedido"
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido/{id}": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "atualiza o status do pedido",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id do pedido",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "status permitido: recebido, em_preparacao, pronto, finalizado",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.StatusRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/pedidos": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "lista todos os pedidos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Pedido"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pedidos/{statuses}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "lista pedido por status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "status dos pedidos a ser pesquisado:(recebido, em_preparacao, pronto, finalizado)",
+                        "name": "statuses",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Pedido"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/produto": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "cadastra um novo produto",
+                "parameters": [
+                    {
+                        "description": "cria produto, categorias: bebida, lanche, acompanhamento",
+                        "name": "produto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.ProdutoRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Produto"
+                        }
+                    }
+                }
+            }
+        },
+        "/produto/{id}": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "atualiza um produto",
+                "parameters": [
+                    {
+                        "description": "categorias: bebida, lanche, acompanhamento",
+                        "name": "produto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.ProdutoRequest"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "atualiza produto pelo id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "apaga produto por id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id do produto",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/produtos/{categoria}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Produto"
+                ],
+                "summary": "pega produtos por categoria",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "categorias: bebida, lanche, acompanhamento",
+                        "name": "categoria",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Produto"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/readiness": {
+            "get": {
+                "description": "get the status of http.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Show the status of http.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "commons.MessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Cliente": {
+            "type": "object",
+            "required": [
+                "cpf",
+                "nome"
+            ],
+            "properties": {
+                "cpf": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "telefone": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ClienteRequest": {
+            "type": "object",
+            "required": [
+                "cpf",
+                "nome"
+            ],
+            "properties": {
+                "cpf": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "telefone": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Pagamento": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "pedidoId": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "type": "string"
+                },
+                "update": {
+                    "type": "string"
+                },
+                "valor": {
+                    "type": "number"
+                }
+            }
+        },
+        "domain.Pedido": {
+            "type": "object",
+            "properties": {
+                "cliente_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "observacao": {
+                    "type": "string"
+                },
+                "produtos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Produto"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PedidoRequest": {
+            "type": "object",
+            "required": [
+                "cliente_id",
+                "produtos"
+            ],
+            "properties": {
+                "cliente_id": {
+                    "type": "integer"
+                },
+                "observacao": {
+                    "type": "string"
+                },
+                "produtos": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "domain.Produto": {
+            "type": "object",
+            "properties": {
+                "categoria": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ProdutoRequest": {
+            "type": "object",
+            "required": [
+                "categoria",
+                "descricao"
+            ],
+            "properties": {
+                "categoria": {
+                    "type": "string"
+                },
+                "descricao": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.StatusRequest": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "header"
+        }
+    }
+}

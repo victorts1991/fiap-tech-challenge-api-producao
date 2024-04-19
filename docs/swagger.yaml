@@ -1,0 +1,463 @@
+basePath: /
+definitions:
+  commons.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.Cliente:
+    properties:
+      cpf:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      nome:
+        type: string
+      telefone:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - cpf
+    - nome
+    type: object
+  domain.ClienteRequest:
+    properties:
+      cpf:
+        type: string
+      email:
+        type: string
+      nome:
+        type: string
+      telefone:
+        type: string
+    required:
+    - cpf
+    - nome
+    type: object
+  domain.Pagamento:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      pedidoId:
+        type: integer
+      status:
+        type: string
+      tipo:
+        type: string
+      update:
+        type: string
+      valor:
+        type: number
+    type: object
+  domain.Pedido:
+    properties:
+      cliente_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      observacao:
+        type: string
+      produtos:
+        items:
+          $ref: '#/definitions/domain.Produto'
+        type: array
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.PedidoRequest:
+    properties:
+      cliente_id:
+        type: integer
+      observacao:
+        type: string
+      produtos:
+        items:
+          type: integer
+        type: array
+    required:
+    - cliente_id
+    - produtos
+    type: object
+  domain.Produto:
+    properties:
+      categoria:
+        type: string
+      created_at:
+        type: string
+      descricao:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  domain.ProdutoRequest:
+    properties:
+      categoria:
+        type: string
+      descricao:
+        type: string
+    required:
+    - categoria
+    - descricao
+    type: object
+  domain.StatusRequest:
+    properties:
+      status:
+        type: string
+    required:
+    - status
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: This is a documentation of all endpoints in the API.
+  title: Tech Challenge API
+  version: 3.0.0
+paths:
+  /cliente:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: cria novo cliente
+        in: body
+        name: pedido
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ClienteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Cliente'
+      summary: cadastra um novo cliente
+      tags:
+      - Cliente
+  /clientes/{cpf}:
+    get:
+      consumes:
+      - '*/*'
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: cpf do cliente
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Cliente'
+      summary: pega um cliente por cpf
+      tags:
+      - Cliente
+  /liveness:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of http.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            type: string
+      summary: Show the status of http.
+      tags:
+      - Health
+  /login/{cpf}:
+    get:
+      consumes:
+      - '*/*'
+      parameters:
+      - description: cpf do cliente
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: pega um cliente por cpf
+      tags:
+      - Login
+  /pagamento/{pedido_id}:
+    get:
+      consumes:
+      - '*/*'
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id do pedido
+        in: path
+        name: pedido_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Pagamento'
+      summary: pega um pagamento por pedido id
+      tags:
+      - Pagamento
+  /pedido:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: cria pedido
+        in: body
+        name: pedido
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PedidoRequest'
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: cadastra um novo pedido
+      tags:
+      - Pedido
+  /pedido/{id}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: id do pedido
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'status permitido: recebido, em_preparacao, pronto, finalizado'
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/domain.StatusRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: atualiza o status do pedido
+      tags:
+      - Pedido
+  /pedido/checkout/{pedidoId}:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: id do pedido a ser feito o checkout
+        in: path
+        name: pedidoId
+        required: true
+        type: integer
+      - description: 'status permitido: aprovado | recusado'
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/domain.StatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.MessageResponse'
+      summary: checkout do pedido
+      tags:
+      - Pedido
+  /pedido/detail/{id}:
+    get:
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id do pedido a ser lista
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Pedido'
+      summary: lista detalhes do pedido
+      tags:
+      - Pedido
+  /pedidos:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Pedido'
+            type: array
+      summary: lista todos os pedidos
+      tags:
+      - Pedido
+  /pedidos/{statuses}:
+    get:
+      parameters:
+      - description: status dos pedidos a ser pesquisado:(recebido, em_preparacao,
+          pronto, finalizado)
+        in: path
+        name: statuses
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Pedido'
+            type: array
+      summary: lista pedido por status
+      tags:
+      - Pedido
+  /produto:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 'cria produto, categorias: bebida, lanche, acompanhamento'
+        in: body
+        name: produto
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProdutoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Produto'
+      summary: cadastra um novo produto
+      tags:
+      - Produto
+  /produto/{id}:
+    delete:
+      parameters:
+      - description: id do produto
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: apaga produto por id
+      tags:
+      - Produto
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 'categorias: bebida, lanche, acompanhamento'
+        in: body
+        name: produto
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProdutoRequest'
+      - description: atualiza produto pelo id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: atualiza um produto
+      tags:
+      - Produto
+  /produtos/{categoria}:
+    get:
+      parameters:
+      - description: 'categorias: bebida, lanche, acompanhamento'
+        in: path
+        name: categoria
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Produto'
+            type: array
+      summary: pega produtos por categoria
+      tags:
+      - Produto
+  /readiness:
+    get:
+      consumes:
+      - '*/*'
+      description: get the status of http.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Show the status of http.
+      tags:
+      - Health
+produces:
+- application/json
+schemes:
+- http
+securityDefinitions:
+  JWT:
+    in: header
+    name: token
+    type: apiKey
+swagger: "2.0"
