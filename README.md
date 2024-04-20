@@ -17,17 +17,17 @@
 12. Na plataforma do Github, acesse o menu "Settings" do projeto, na tela que se abrir, clique no menu Security->Secrets and variables->Actions;
 13. Adicione uma "repository secret" chamada AWS_ACCESS_KEY_ID com o valor copiado de "Chave de acesso", e crie outra "repository secret" chamada AWS_SECRET_ACCESS_KEY com o valor copiado de "Chave de acesso secreta";
 14. Vincule este projeto no Sonar Cloud:
-``
+```
 https://sonarcloud.io/
-``
+```
 15. Acesse seu projeto no Sonar Cloud e vá até o menu Administration->Analisys Method e desmarque a opção "Automatic Analysis";
 16. Depois vá até o menu Administration->Update Key e copie o valor de Project Key;
 17. No menu Account que está no canto superior direito com a foto de seu usuário, acesse o menu My Organizations e copie o valor da Organization Key;
 18. Depois novamente no menu Account, acesse My Account->Security e crie um novo token e copie o seu valor;
 19. Retorne até o menu Settings do seu projeto do Github e cadastre novas "repository secret" conforme explicado abaixo:
-``
+```
 SONAR_PROJECT_KEY=Valor copiado no passo 16
 SONAR_ORGANIZATION=Valor copiado no passo 17
 SONAR_TOKEN=Valor copiado no passo 18
-``
+```
 20. Após isso qualquer commit neste repositório que for para a branch "main", irá subir uma imagem desta api no ECR da AWS;
