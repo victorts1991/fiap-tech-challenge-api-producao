@@ -17,8 +17,8 @@ jobs:
         with:
           projectBaseDir: internal
           args: >
-            -Dsonar.organization=victorts1991
-            -Dsonar.projectKey=victorts1991_fiap-tech-challenge-api-producao
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
