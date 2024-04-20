@@ -1,5 +1,7 @@
 # fiap-tech-challenge-api
 
+SONAR_TOKEN
+
 ### Tech Challenge 4:
 ### Passos para homologação dos professores da Fiap
 
