@@ -4,48 +4,32 @@ import (
 	"context"
 	"fiap-tech-challenge-api/internal/adapters/repository"
 	"fiap-tech-challenge-api/internal/core/commons"
-	"fiap-tech-challenge-api/internal/core/domain"
 	"fmt"
 )
 
-type AtualizaStatusPedidoUC interface {
-	Atualiza(ctx context.Context, status string, id int64) error
+type AtualizaStatusProducao interface {
+	Atualiza(ctx context.Context, status, pedidoID string) error
 }
 
-type atualizaStatusPedido struct {
-	repo     repository.PedidoRepo
+type atualizaStatusProducao struct {
 	filaRepo repository.FilaRepo
 }
 
-func (uc atualizaStatusPedido) Atualiza(ctx context.Context, status string, id int64) error {
-	if err := ValidaStatuses([]string{status}); err != nil {
-		return err
-	}
-
-	ped, err := uc.repo.PesquisaPorID(ctx, id)
+func (uc atualizaStatusProducao) Atualiza(ctx context.Context, status, pedidoID string) error {
+	ped, err := uc.filaRepo.PegaPedidoPorID(ctx, pedidoID)
 	if err != nil {
 		return err
 	}
 
-	if couldNotUpdateStatus(ped.Status) {
-		return commons.BadRequest.New(fmt.Sprintf("pedido %d não pode atualizar para %s, status atual: %s", ped.Id, status, ped.Status))
+	if ped == nil {
+		return commons.NotFound.New(fmt.Sprintf("nenhum pedido encontrado para id %s", pedidoID))
 	}
 
-	if err = uc.filaRepo.AtualizaStatus(ctx, status, id); err != nil {
-		return err
-	}
-
-	return uc.repo.AtualizaStatus(ctx, status, id)
+	return uc.filaRepo.AtualizaStatus(ctx, status, pedidoID)
 }
 
-func couldNotUpdateStatus(status string) bool {
-	return status == domain.StatusAguardandoPagamento ||
-		status == domain.StatusPagamentoRecusado
-}
-
-func NewAtualizaStatusPedidoUC(repo repository.PedidoRepo, filaRepo repository.FilaRepo) AtualizaStatusPedidoUC {
-	return &atualizaStatusPedido{
-		repo:     repo,
+func NewAtualizaStatusProducaoUC(filaRepo repository.FilaRepo) AtualizaStatusProducao {
+	return &atualizaStatusProducao{
 		filaRepo: filaRepo,
 	}
 }
