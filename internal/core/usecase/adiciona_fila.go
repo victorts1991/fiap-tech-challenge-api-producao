@@ -7,14 +7,14 @@ import (
 )
 
 type CadastrarFila interface {
-	Cadastra(ctx context.Context, fila *domain.Fila) error
+	Cadastra(ctx context.Context, fila *domain.Producao) error
 }
 
 type cadastraFila struct {
 	filaRepo repository.FilaRepo
 }
 
-func (uc *cadastraFila) Cadastra(ctx context.Context, fila *domain.Fila) error {
+func (uc *cadastraFila) Cadastra(ctx context.Context, fila *domain.Producao) error {
 	err := uc.filaRepo.Insere(ctx, fila)
 
 	if err != nil {
