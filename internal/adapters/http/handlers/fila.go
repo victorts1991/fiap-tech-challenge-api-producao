@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"fiap-tech-challenge-api/internal/core/commons"
-	"fiap-tech-challenge-api/internal/core/domain"
-	"fiap-tech-challenge-api/internal/core/usecase"
+	"fiap-tech-challenge-producao/internal/core/commons"
+	"fiap-tech-challenge-producao/internal/core/domain"
+	"fiap-tech-challenge-producao/internal/core/usecase"
 	"github.com/joomcode/errorx"
 	"github.com/labstack/echo/v4"
 	serverErr "github.com/rhuandantas/fiap-tech-challenge-commons/pkg/errors"
@@ -42,12 +42,12 @@ func (h *Producao) RegistraRotasFila(server *echo.Echo) {
 }
 
 // pegaPorPedidoId godoc
-// @Summary lista pedido por status
-// @Tags Pedido
+// @Summary lista pedido em producao
+// @Tags Producao
 // @Produce json
-// @Param        statuses   path      string  true  "status dos pedidos a ser pesquisado:(recebido, em_preparacao, pronto, finalizado)"
-// @Success 200 {array} domain.Pedido
-// @Router /pedidos/{statuses} [get]
+// @Param        pedidoID   path      string  true  "id do  pedidos em producao"
+// @Success 200 {object} domain.Producao
+// @Router /producao/{pedidoID} [get]
 func (h *Producao) pegaPorPedidoId(ctx echo.Context) error {
 	pedidoID := ctx.Param("pedido_id")
 	pedidos, err := h.listaPorStatusUC.PesquisaPorID(ctx.Request().Context(), pedidoID)
@@ -58,13 +58,13 @@ func (h *Producao) pegaPorPedidoId(ctx echo.Context) error {
 }
 
 // atualizaStatus godoc
-// @Summary atualiza o status do pedido
-// @Tags Pedido
+// @Summary atualiza o status do pedido na producao
+// @Tags Producao
 // @Accept json
 // @Param        id   path      integer  true  "id do pedido"
-// @Param        id   body      domain.StatusRequest  true  "status permitido: recebido, em_preparacao, pronto, finalizado"
+// @Param        id   body      domain.StatusRequest  true  "status"
 // @Produce json
-// @Router /pedido/{id} [patch]
+// @Router /producao/{oedidoID} [patch]
 func (h *Producao) atualizaStatus(ctx echo.Context) error {
 	var (
 		status struct {
@@ -91,7 +91,7 @@ func (h *Producao) atualizaStatus(ctx echo.Context) error {
 // @Summary adiciona pedido a produção
 // @Tags Producao
 // @Produce json
-// @Router /pedidos [post]
+// @Router /producao [post]
 func (h *Producao) adicionaProducao(ctx echo.Context) error {
 	var (
 		producao domain.Producao

@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"context"
-	"fiap-tech-challenge-api/internal/adapters/repository"
-	"fiap-tech-challenge-api/internal/core/domain"
+	"fiap-tech-challenge-producao/internal/adapters/repository"
+	"fiap-tech-challenge-producao/internal/core/domain"
 )
 
 type CadastrarFila interface {
