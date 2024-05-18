@@ -4,10 +4,10 @@
 package main
 
 import (
-	"fiap-tech-challenge-api/internal/adapters/http"
-	"fiap-tech-challenge-api/internal/adapters/http/handlers"
-	"fiap-tech-challenge-api/internal/adapters/repository"
-	"fiap-tech-challenge-api/internal/core/usecase"
+	"fiap-tech-challenge-producao/internal/adapters/http"
+	"fiap-tech-challenge-producao/internal/adapters/http/handlers"
+	"fiap-tech-challenge-producao/internal/adapters/repository"
+	"fiap-tech-challenge-producao/internal/core/usecase"
 	db "github.com/rhuandantas/fiap-tech-challenge-commons/pkg/db/mysql"
 	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/middlewares/auth"
 	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/util"

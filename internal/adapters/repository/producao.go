@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"fiap-tech-challenge-api/internal/core/domain"
+	"fiap-tech-challenge-producao/internal/core/domain"
 	"github.com/joomcode/errorx"
 	db "github.com/rhuandantas/fiap-tech-challenge-commons/pkg/db/mysql"
 	"xorm.io/xorm"

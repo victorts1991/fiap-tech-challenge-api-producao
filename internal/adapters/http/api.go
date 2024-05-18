@@ -2,8 +2,8 @@ package http
 
 import (
 	"context"
-	_ "fiap-tech-challenge-api/docs"
-	"fiap-tech-challenge-api/internal/adapters/http/handlers"
+	_ "fiap-tech-challenge-producao/docs"
+	"fiap-tech-challenge-producao/internal/adapters/http/handlers"
 	"fmt"
 
 	"github.com/joomcode/errorx"
