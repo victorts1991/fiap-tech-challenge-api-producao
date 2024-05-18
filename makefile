@@ -14,3 +14,6 @@ set-vars:
 	export DB_HOST=mysql
 	export DB_PORT=3306
 	export AUTH_SECRET=Testando
+
+mock:
+	mockgen -source=internal/adapters/repository/producao.go -package=mock_repo -destination=test/mock/repository/producao.go
