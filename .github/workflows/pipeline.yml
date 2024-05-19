@@ -6,7 +6,16 @@ on:
 
 jobs:
 
-  code-analisys:    
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Unit Tests      
+        run: go test -v ./...
+
+  code-analisys:   
+    needs: unit-test
     name: Code Analisys with SonarCloud
     runs-on: ubuntu-latest
     steps:
