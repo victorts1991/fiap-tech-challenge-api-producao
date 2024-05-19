@@ -6,7 +6,16 @@ on:
 
 jobs:
 
-  code-analisys:    
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Unit Tests      
+        run: go test -v ./...
+
+  code-analisys:   
+    needs: unit-test
     name: Code Analisys with SonarCloud
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +24,7 @@ jobs:
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: internal
+          projectBaseDir: internal/core/usecase
           args: >
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
