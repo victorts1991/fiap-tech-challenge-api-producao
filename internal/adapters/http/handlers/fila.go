@@ -37,7 +37,7 @@ func NewProducao(validator util.Validator,
 
 func (h *Producao) RegistraRotasFila(server *echo.Echo) {
 	server.GET("/producao/:pedido_id", h.pegaPorPedidoId)
-	server.POST("/producao", h.adicionaProducao)
+	server.POST("/internal/producao", h.adicionaProducao)
 	server.PATCH("/producao/:pedido_id", h.atualizaStatus)
 }
 
