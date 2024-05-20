@@ -2,8 +2,8 @@ package http
 
 import (
 	"context"
-	_ "fiap-tech-challenge-api/docs"
-	"fiap-tech-challenge-api/internal/adapters/http/handlers"
+	_ "fiap-tech-challenge-producao/docs"
+	"fiap-tech-challenge-producao/internal/adapters/http/handlers"
 	"fmt"
 
 	"github.com/joomcode/errorx"
@@ -15,16 +15,16 @@ import (
 )
 
 type Server struct {
-	appName          *string
-	host             string
-	Server           *echo.Echo
-	healthHandler    *handlers.HealthCheck
-	pedidoHandler    *handlers.Pedido
+	appName         *string
+	host            string
+	Server          *echo.Echo
+	healthHandler   *handlers.HealthCheck
+	producaoHandler *handlers.Producao
 }
 
 // NewAPIServer creates the main http with all configurations necessary
-func NewAPIServer(healthHandler *handlers.HealthCheck, pedidoHandler *handlers.Pedido) *Server {
-	host := ":3000"
+func NewAPIServer(healthHandler *handlers.HealthCheck, pedidoHandler *handlers.Producao) *Server {
+	host := ":3003"
 	appName := "tech-challenge-api"
 	app := echo.New()
 
@@ -50,13 +50,13 @@ func NewAPIServer(healthHandler *handlers.HealthCheck, pedidoHandler *handlers.P
 	app.GET("/docs/*", echoSwagger.WrapHandler)
 
 	return &Server{
-		appName:          &appName,
-		host:             host,
-		Server:           app,
-		healthHandler:    healthHandler,
+		appName:       &appName,
+		host:          host,
+		Server:        app,
+		healthHandler: healthHandler,
 		//clienteHandler:   clienteHandler,
 		//produtoHandler:   produtoHandler,
-		pedidoHandler:    pedidoHandler,
+		producaoHandler: pedidoHandler,
 		//pagamentoHandler: pagamentoHandler,
 		//loginHandler:     loginHandler,
 	}
@@ -64,11 +64,7 @@ func NewAPIServer(healthHandler *handlers.HealthCheck, pedidoHandler *handlers.P
 
 func (hs *Server) RegisterHandlers() {
 	hs.healthHandler.RegisterHealth(hs.Server)
-	//hs.clienteHandler.RegistraRotasCliente(hs.Server)
-	//hs.produtoHandler.RegistraRotasProduto(hs.Server)
-	hs.pedidoHandler.RegistraRotasPedido(hs.Server)
-	//hs.pagamentoHandler.RegistraRotasPagamento(hs.Server)
-	//hs.loginHandler.RegistraRotasLogin(hs.Server)
+	hs.producaoHandler.RegistraRotasFila(hs.Server)
 }
 
 // Start starts an application on specific port

@@ -7,31 +7,27 @@
 package main
 
 import (
-	"fiap-tech-challenge-api/internal/adapters/http"
-	"fiap-tech-challenge-api/internal/adapters/http/handlers"
-	"fiap-tech-challenge-api/internal/adapters/http/middlewares/auth"
-	"fiap-tech-challenge-api/internal/adapters/repository"
-	"fiap-tech-challenge-api/internal/core/usecase"
-	"fiap-tech-challenge-api/internal/core/usecase/mapper"
-	"fiap-tech-challenge-api/internal/util"
+	"fiap-tech-challenge-producao/internal/adapters/http"
+	"fiap-tech-challenge-producao/internal/adapters/http/handlers"
+	repository2 "fiap-tech-challenge-producao/internal/adapters/repository"
+	"fiap-tech-challenge-producao/internal/core/usecase"
+	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/db/mysql"
+	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/middlewares/auth"
+	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/util"
 )
 
 // Injectors from wire.go:
 
 func InitializeWebServer() (*http.Server, error) {
 	healthCheck := handlers.NewHealthCheck()
-	dbConnector := repository.NewMySQLConnector()
 	validator := util.NewCustomValidator()
-	token := auth.NewJwtToken()	
-	pedidoRepo := repository.NewPedidoRepo(dbConnector)
-	pedido := mapper.NewPedidoMapper()
-	listarPedidoPorStatus := usecase.NewListaPedidoPorStatus(pedidoRepo, pedido)
-	listarTodosPedidos := usecase.NewListaTodosPedidos(pedidoRepo, pedido)	
-	filaRepo := repository.NewFilaRepo(dbConnector)	
-	atualizaStatusPedidoUC := usecase.NewAtualizaStatusPedidoUC(pedidoRepo, filaRepo)
-	pegarDetalhePedido := usecase.NewPegaDetalhePedido(pedidoRepo, pedido)	
-	cadastrarFila := usecase.NewCadastraFila(filaRepo)	
-	handlersPedido := handlers.NewPedido(validator, listarPedidoPorStatus, listarTodosPedidos, atualizaStatusPedidoUC, pegarDetalhePedido, cadastrarFila, token)	
-	server := http.NewAPIServer(healthCheck, handlersPedido)
+	dbConnector := repository.NewMySQLConnector()
+	filaRepo := repository2.NewFilaRepo(dbConnector)
+	pegaPedidoPorID := usecase.NewPegaPedidoPorID(filaRepo)
+	atualizaStatusProducao := usecase.NewAtualizaStatusProducaoUC(filaRepo)
+	cadastrarFila := usecase.NewCadastraFila(filaRepo)
+	token := auth.NewJwtToken()
+	producao := handlers.NewProducao(validator, pegaPedidoPorID, atualizaStatusProducao, cadastrarFila, token)
+	server := http.NewAPIServer(healthCheck, producao)
 	return server, nil
 }
