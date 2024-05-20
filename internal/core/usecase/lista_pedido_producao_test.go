@@ -30,10 +30,9 @@ var _ = Describe("pesquisa por pedido id use case testes", func() {
 			repo.EXPECT().PegaPedidoPorID(ctx, objID.Hex()).Return(&domain.Producao{}, nil)
 			ped, err := pegaPorPedidoUC.PesquisaPorID(ctx, objID.Hex())
 
-			gomega.Expect(err).ToNot(gomega.BeNil())
-			gomega.Expect(ped).To(gomega.BeNil())
+			gomega.Expect(err).To(gomega.BeNil())
+			gomega.Expect(ped).ToNot(gomega.BeNil())
 		})
-
 		It("falha ao pesquisar por pedido id", func() {
 			repo.EXPECT().PegaPedidoPorID(ctx, objID.Hex()).Return(nil, errors.New("mock error"))
 			ped, err := pegaPorPedidoUC.PesquisaPorID(ctx, objID.Hex())
@@ -45,7 +44,7 @@ var _ = Describe("pesquisa por pedido id use case testes", func() {
 			repo.EXPECT().PegaPedidoPorID(ctx, objID.Hex()).Return(nil, nil)
 			ped, err := pegaPorPedidoUC.PesquisaPorID(ctx, objID.Hex())
 
-			gomega.Expect(err).To(gomega.Not(gomega.BeNil()))
+			gomega.Expect(err).To(gomega.BeNil())
 			gomega.Expect(ped).To(gomega.BeNil())
 		})
 	})

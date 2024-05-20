@@ -20,7 +20,6 @@
 # Go workspace file
 go.work
 .idea
-/test/mock/
 api
 docker
 .vscode
