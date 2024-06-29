@@ -4,7 +4,7 @@ generate-swagger:
 	swag init
 generate-di:
 	# TODO if the files doesnt exists ignore the exit(1)
-	rm wire_gen.go
+	rm wire_gen.go 2>./error
 	go generate
 
 mock:

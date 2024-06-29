@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 	"fiap-tech-challenge-producao/internal/adapters/repository"
-	"fiap-tech-challenge-producao/internal/core/commons"
 	"fmt"
+	_error "github.com/rhuandantas/fiap-tech-challenge-commons/pkg/errors"
 )
 
 type AtualizaStatusProducao interface {
@@ -22,7 +22,7 @@ func (uc atualizaStatusProducao) Atualiza(ctx context.Context, status, pedidoID 
 	}
 
 	if ped == nil {
-		return commons.NotFound.New(fmt.Sprintf("nenhum pedido encontrado para id %s", pedidoID))
+		return _error.NotFound.New(fmt.Sprintf("nenhum pedido encontrado para id %s", pedidoID))
 	}
 
 	return uc.filaRepo.AtualizaStatus(ctx, status, pedidoID)
