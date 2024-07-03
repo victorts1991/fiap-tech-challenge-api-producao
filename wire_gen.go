@@ -7,19 +7,21 @@
 package main
 
 import (
-	"fiap-tech-challenge-producao/internal/adapters/http"
-	"fiap-tech-challenge-producao/internal/adapters/http/handlers"
+	"fiap-tech-challenge-producao/internal/adapters/handlers"
+	"fiap-tech-challenge-producao/internal/adapters/handlers/http"
+	"fiap-tech-challenge-producao/internal/adapters/handlers/pubsub"
 	repository2 "fiap-tech-challenge-producao/internal/adapters/repository"
 	"fiap-tech-challenge-producao/internal/core/usecase"
 	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/db/mysql"
+	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/messaging"
 	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/middlewares/auth"
 	"github.com/rhuandantas/fiap-tech-challenge-commons/pkg/util"
 )
 
 // Injectors from wire.go:
 
-func InitializeWebServer() (*http.Server, error) {
-	healthCheck := handlers.NewHealthCheck()
+func InitializeWebServer() (*handlers.Server, error) {
+	healthCheck := http.NewHealthCheck()
 	validator := util.NewCustomValidator()
 	dbConnector := repository.NewMySQLConnector()
 	filaRepo := repository2.NewFilaRepo(dbConnector)
@@ -27,7 +29,9 @@ func InitializeWebServer() (*http.Server, error) {
 	atualizaStatusProducao := usecase.NewAtualizaStatusProducaoUC(filaRepo)
 	cadastrarFila := usecase.NewCadastraFila(filaRepo)
 	token := auth.NewJwtToken()
-	producao := handlers.NewProducao(validator, pegaPedidoPorID, atualizaStatusProducao, cadastrarFila, token)
-	server := http.NewAPIServer(healthCheck, producao)
+	messagingClient := messaging.NewSqsClient()
+	producaoReceiver := pubsub.NewProducaoHandler(cadastrarFila)
+	producao := http.NewProducao(validator, pegaPedidoPorID, atualizaStatusProducao, cadastrarFila, token)
+	server := handlers.NewAPIServer(healthCheck, producao, producaoReceiver, messagingClient)
 	return server, nil
 }

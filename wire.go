@@ -21,12 +21,12 @@ func InitializeWebServer() (*handlers2.Server, error) {
 	wire.Build(db.NewMySQLConnector,
 		util.NewCustomValidator,
 		repository.NewFilaRepo,
-		pubsub.NewProducaoHandler,
 		messaging.NewSqsClient,
 		auth.NewJwtToken,
 		usecase.NewCadastraFila,
 		usecase.NewAtualizaStatusProducaoUC,
 		usecase.NewPegaPedidoPorID,
+		pubsub.NewProducaoHandler,
 		http.NewHealthCheck,
 		http.NewProducao,
 		handlers2.NewAPIServer)
