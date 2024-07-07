@@ -84,7 +84,7 @@ func (hs *Server) Start(ctx context.Context) {
 
 	hs.RegisterHandlers()
 	log.Info(ctx, fmt.Sprintf("Starting a http at http://%s", hs.host))
-	err := hs.Server.Start(hs.host)
+	err := hs.Server.Start(fmt.Sprintf("localhost:%s", hs.host))
 	if err != nil {
 		log.Error(ctx, errorx.Decorate(err, "failed to start the http server"))
 		return
