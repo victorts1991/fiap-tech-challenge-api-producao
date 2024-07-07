@@ -3,7 +3,7 @@
 ### Tech Challenge 5:
 
 1. Faça o login na plataforma da AWS;
-2. Crie um repositório privado no ECR da AWS chamado fiap-tech-challenge-api-pedidos;
+2. Crie um repositório privado no ECR da AWS chamado fiap-tech-challenge-api-producao;
 3. Na plataforma do Github, acesse o menu "Settings" do projeto, na tela que se abrir, clique no menu Security->Secrets and variables->Actions;
 4. Adicione uma "repository secret" chamada AWS_ACCESS_KEY_ID com o valor copiado de "Chave de acesso" do repositório do K8S, e crie outra "repository secret" chamada AWS_SECRET_ACCESS_KEY com o valor copiado de "Chave de acesso secreta" do repositório do K8S;
 5. Vincule este projeto no Sonar Cloud:
