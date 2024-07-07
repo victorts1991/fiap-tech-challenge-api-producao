@@ -85,4 +85,3 @@ jobs:
       shell: bash
       run: |
         kubectl rollout restart deployment api-producao-deployment
-
