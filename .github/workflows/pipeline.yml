@@ -72,3 +72,17 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+      id: install-kubectl
+
+    - name: Update KubeConfig
+      shell: bash
+      run: |
+        aws eks update-kubeconfig --name fiap-tech-challenge-infra-k8s --region=us-east-2 
+
+    - name: Rollout Restart Deployment
+      shell: bash
+      run: |
+        kubectl rollout restart deployment api-producao-deployment
+
