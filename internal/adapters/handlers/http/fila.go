@@ -1,8 +1,6 @@
-package handlers
+package http
 
 import (
-	"fiap-tech-challenge-producao/internal/core/commons"
-	"fiap-tech-challenge-producao/internal/core/domain"
 	"fiap-tech-challenge-producao/internal/core/usecase"
 	"github.com/joomcode/errorx"
 	"github.com/labstack/echo/v4"
@@ -37,7 +35,6 @@ func NewProducao(validator util.Validator,
 
 func (h *Producao) RegistraRotasFila(server *echo.Echo) {
 	server.GET("/producao/:pedido_id", h.pegaPorPedidoId)
-	server.POST("/internal/producao", h.adicionaProducao)
 	server.PATCH("/producao/:pedido_id", h.atualizaStatus)
 }
 
@@ -64,7 +61,7 @@ func (h *Producao) pegaPorPedidoId(ctx echo.Context) error {
 // @Param        id   path      integer  true  "id do pedido"
 // @Param        id   body      domain.StatusRequest  true  "status"
 // @Produce json
-// @Router /producao/{oedidoID} [patch]
+// @Router /producao/{pedidoID} [patch]
 func (h *Producao) atualizaStatus(ctx echo.Context) error {
 	var (
 		status struct {
@@ -74,7 +71,7 @@ func (h *Producao) atualizaStatus(ctx echo.Context) error {
 	)
 
 	if err = ctx.Bind(&status); err != nil {
-		return serverErr.HandleError(ctx, commons.BadRequest.New(err.Error()))
+		return serverErr.HandleError(ctx, serverErr.BadRequest.New(err.Error()))
 	}
 
 	id := ctx.Param("pedido_id")
@@ -85,30 +82,4 @@ func (h *Producao) atualizaStatus(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, status)
-}
-
-// adicionaProducao godoc
-// @Summary adiciona pedido a produção
-// @Tags Producao
-// @Produce json
-// @Router /producao [post]
-func (h *Producao) adicionaProducao(ctx echo.Context) error {
-	var (
-		producao domain.Producao
-		err      error
-	)
-	if err = ctx.Bind(&producao); err != nil {
-		return serverErr.HandleError(ctx, commons.BadRequest.New(err.Error()))
-	}
-
-	err = h.validator.ValidateStruct(producao)
-	if err != nil {
-		return serverErr.HandleError(ctx, commons.BadRequest.New(err.Error()))
-	}
-
-	err = h.fila.Cadastra(ctx.Request().Context(), &producao)
-	if err != nil {
-		return serverErr.HandleError(ctx, errorx.Cast(err))
-	}
-	return ctx.JSON(http.StatusOK, producao)
 }

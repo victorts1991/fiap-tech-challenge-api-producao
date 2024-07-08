@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/labstack/gommon/log"
 	"os"
 	"os/signal"
@@ -21,21 +22,27 @@ import (
 // @in							header
 // @name						token
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
 	app, err := InitializeWebServer()
 	if err != nil {
 		log.Error(err.Error())
 		panic(err)
 	}
 
-	app.Start()
+	app.Start(ctx)
 
 	// listens for system signals to gracefully shutdown
 	signalChannel := make(chan os.Signal, 1)
-	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 	switch <-signalChannel {
 	case os.Interrupt:
-		log.Info("Received SIGINT, stopping...")
+		log.Info("Received Interrupt, stopping...")
+		cancel()
 	case syscall.SIGTERM:
+		log.Info("Received SIGTERM, stopping...")
+		cancel()
+	case syscall.SIGINT:
 		log.Info("Received SIGINT, stopping...")
+		cancel()
 	}
 }

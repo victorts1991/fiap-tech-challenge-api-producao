@@ -1,4 +1,27 @@
-# fiap-tech-challenge-api
+# fiap-tech-challenge-api-producao
+
+
+### Tech Challenge 5:
+
+1. Faça o login na plataforma da AWS;
+2. Crie um repositório privado no ECR da AWS chamado fiap-tech-challenge-api-producao;
+3. Na plataforma do Github, acesse o menu "Settings" do projeto, na tela que se abrir, clique no menu Security->Secrets and variables->Actions;
+4. Adicione uma "repository secret" chamada AWS_ACCESS_KEY_ID com o valor copiado de "Chave de acesso" do repositório do K8S, e crie outra "repository secret" chamada AWS_SECRET_ACCESS_KEY com o valor copiado de "Chave de acesso secreta" do repositório do K8S;
+5. Vincule este projeto no Sonar Cloud:
+```
+https://sonarcloud.io/
+```
+6. Acesse seu projeto no Sonar Cloud e vá até o menu Administration->Analisys Method e desmarque a opção "Automatic Analysis";
+7. Depois vá até o menu Administration->Update Key e copie o valor de Project Key;
+8. No menu Account que está no canto superior direito com a foto de seu usuário, acesse o menu My Organizations e copie o valor da Organization Key;
+9. Depois novamente no menu Account, acesse My Account->Security e crie um novo token e copie o seu valor;
+10. Retorne até o menu Settings do seu projeto do Github e cadastre novas "repository secret" conforme explicado abaixo:
+```
+SONAR_PROJECT_KEY=Valor copiado no passo 16
+SONAR_ORGANIZATION=Valor copiado no passo 17
+SONAR_TOKEN=Valor copiado no passo 18
+```
+11. Após isso qualquer commit neste repositório que for para a branch "main", irá subir uma imagem desta api no ECR da AWS;
 
 ### Tech Challenge 4:
 ### Passos para homologação dos professores da Fiap
