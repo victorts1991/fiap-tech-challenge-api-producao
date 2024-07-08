@@ -30,7 +30,7 @@ type Server struct {
 func NewAPIServer(healthHandler *http.HealthCheck, producaoHandler *http.Producao, producaoPubsubHandler *pubsub.ProducaoHandler, messageClient messaging.Client) *Server {
 	host := os.Getenv("SERVER_PORT")
 	if host == "" {
-		host = ":3000"
+		host = "3000"
 	}
 
 	appName := "tech-challenge-producao"
