@@ -28,10 +28,10 @@ type Server struct {
 
 // NewAPIServer creates the main http with all configurations necessary
 func NewAPIServer(healthHandler *http.HealthCheck, producaoHandler *http.Producao, producaoPubsubHandler *pubsub.ProducaoHandler, messageClient messaging.Client) *Server {
-	host := os.Getenv("SERVER_PORT")
-	if host == "" {
-		host = "3000"
-	}
+	//host := os.Getenv("SERVER_PORT")
+	//if host == "" {
+	host := "3000"
+	//}
 
 	appName := "tech-challenge-producao"
 	app := echo.New()
