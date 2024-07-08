@@ -30,7 +30,7 @@ type Server struct {
 func NewAPIServer(healthHandler *http.HealthCheck, producaoHandler *http.Producao, producaoPubsubHandler *pubsub.ProducaoHandler, messageClient messaging.Client) *Server {
 	//host := os.Getenv("SERVER_PORT")
 	//if host == "" {
-	host := "3000"
+	host := ":3000"
 	//}
 
 	appName := "tech-challenge-producao"
@@ -84,7 +84,7 @@ func (hs *Server) Start(ctx context.Context) {
 
 	hs.RegisterHandlers()
 	log.Info(ctx, fmt.Sprintf("Starting a http at http://%s", hs.host))
-	err := hs.Server.Start(fmt.Sprintf("localhost:%s", hs.host))
+	err := hs.Server.Start(hs.host)
 	if err != nil {
 		log.Error(ctx, errorx.Decorate(err, "failed to start the http server"))
 		return
